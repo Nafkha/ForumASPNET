@@ -11,11 +11,10 @@ namespace ProjetCsharp.DAL
         Post GetById(int id);
         IEnumerable<Post> GetAll();
         IEnumerable<Post> GetFilteredPosts(string searchQuery);
+        IEnumerable<Post> GetPostsByForum(int id);
 
         Task Add(Post pos);
         Task Delete(int id);
         Task EditPostContent(int id, string newContent);
-
-
     }
 }
