@@ -19,11 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjetCsharp.BL\ProjetCsharp.BL.csproj" />
     <ProjectReference Include="..\ProjetCsharp.DAL\ProjetCsharp.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Forum\" />
   </ItemGroup>
 
 </Project>

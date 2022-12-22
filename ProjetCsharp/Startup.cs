@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ProjetCsharp.Services;
 using ProjetCsharp.DAL.Models;
 using ProjetCsharp.Data;
+using ProjetCsharp.DAL;
+using ProjetCsharp.BL;
 
 namespace ProjetCsharp
 {
@@ -31,6 +33,7 @@ namespace ProjetCsharp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IForum, ForumService>();
 
             services.AddMvc();
         }
