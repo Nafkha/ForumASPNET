@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ProjetCsharp.DAL\ProjetCsharp.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Post\" />
+  </ItemGroup>
+
 </Project>

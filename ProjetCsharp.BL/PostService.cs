@@ -1,4 +1,5 @@
-﻿using ProjetCsharp.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjetCsharp.DAL;
 using ProjetCsharp.DAL.Models;
 using ProjetCsharp.Data;
 using System;
@@ -39,7 +40,8 @@ namespace ProjetCsharp.BL
 
         public Post GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Posts.Where(post => post.Id == id).Include(post => post.User).Include(post => post.Replies)
+                .ThenInclude(reply=>reply.User).Include(post => post.Forum).First();
         }
 
         public IEnumerable<Post> GetFilteredPosts(string searchQuery)
