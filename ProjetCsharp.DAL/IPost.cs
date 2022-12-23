@@ -12,6 +12,7 @@ namespace ProjetCsharp.DAL
         IEnumerable<Post> GetAll();
         IEnumerable<Post> GetFilteredPosts(string searchQuery);
         IEnumerable<Post> GetPostsByForum(int id);
+        IEnumerable<Post> GetLatestPosts(int nPosts);
 
         Task Add(Post pos);
         Task Delete(int id);

@@ -36,7 +36,7 @@ namespace ProjetCsharp.BL
 
         public IEnumerable<Post> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Posts.Include(post => post.User).Include(post => post.Replies).ThenInclude(reply => reply.User).Include(post => post.Forum);
         }
 
         public Post GetById(int id)
@@ -48,6 +48,11 @@ namespace ProjetCsharp.BL
         public IEnumerable<Post> GetFilteredPosts(string searchQuery)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Post> GetLatestPosts(int nPosts)
+        {
+            return GetAll().OrderByDescending(post => post.Created).Take(nPosts);
         }
 
         public IEnumerable<Post> GetPostsByForum(int id)
