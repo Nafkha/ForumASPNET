@@ -18,9 +18,10 @@ namespace ProjetCsharp.BL
             _context = context;
         }
 
-        public Task Add(Post pos)
+        public async Task Add(Post pos)
         {
-            throw new NotImplementedException();
+            _context.Add(pos);
+            await _context.SaveChangesAsync();
         }
 
         public Task Delete(int id)
