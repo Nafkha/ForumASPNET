@@ -93,6 +93,11 @@ body {
         display: none;
     }
 }
+
+.searchForm .searchBar {
+    color: black;
+}
+
 .homeSearch{
     width : 100%;
     margin-top : 8px;

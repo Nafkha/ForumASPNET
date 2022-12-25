@@ -56,6 +56,14 @@ namespace ProjetCsharp.BL
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Post> GetFilteredPosts(int id, string searchQuery)
+        {
+            
+
+            var forum = _context.Forums.Find(id);
+            return string.IsNullOrEmpty(searchQuery)? forum.Posts : forum.Posts.Where(post => post.Title.Contains(searchQuery) || post.Content.Contains(searchQuery));
+        }
+
         public IEnumerable<Post> GetLatestPosts(int nPosts)
         {
             return GetAll().OrderByDescending(post => post.Created).Take(nPosts);
