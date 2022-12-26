@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjetCsharp.BL
 {
-    class ApplicationUserService : IApplicationUser
+   public class ApplicationUserService : IApplicationUser
     {
 
         public readonly ApplicationDbContext _context;

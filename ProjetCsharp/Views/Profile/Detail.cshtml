@@ -13,19 +13,18 @@
     <div class="row userProfile">
         <div class="col-md-4">
             <div id="userProfileImage" style="background-image: url(@Model.ProfileImageUrl)"></div>
-            @if(User.Identity.Name == Model.UserName)
+            @if (Context.User.Identity.Name == Model.UserName)
             {
-                <form method="post" enctype="multipart/form-data" asp-controller="Profile" action="UploadProfileImage">
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfileImage">
                     <div id="upload">
                         <label class="btn btn-default btn-file">
-                            Browse <input type="file" name="file" style="display:none" />
-                        </label> 
+                            Browse <input type="file" name="file" style="display:none;" />
+                        </label>
                     </div>
                     <button type="submit" id="btn-profile" class="btn btn-default">Submit</button>
                 </form>
             }
         </div>
-    </div>
     <div class="col-md-8">
         <span id="userName">@Model.UserName</span>
         @if (@Model.IsAdmin)
@@ -36,5 +35,6 @@
         <span id="userRating">Current Rating: @Model.UserRating</span>
         <span id="userEmailLabel">Email: @Model.Email</span>
         <span id="userCreatedLabel">Member Since: @Model.MemberSince</span>
+    </div>
     </div>
 </div>
