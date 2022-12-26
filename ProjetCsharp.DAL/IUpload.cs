@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProjetCsharp.DAL
 {
-    interface IUpload
+    public interface IUpload
     {
     }
 }

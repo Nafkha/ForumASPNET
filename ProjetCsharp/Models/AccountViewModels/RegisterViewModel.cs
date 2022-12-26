@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProjetCsharp.Models.AccountViewModels
 {
@@ -23,5 +19,11 @@ namespace ProjetCsharp.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Username")]
+        [StringLength(20, ErrorMessage = "Wrong User Name", MinimumLength = 3)]
+
+        public string UserName { get; set; }
     }
 }
