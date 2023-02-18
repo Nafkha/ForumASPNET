@@ -66,12 +66,25 @@ namespace ProjetCsharp.BL
 
         public IEnumerable<Post> GetLatestPosts(int nPosts)
         {
-            return GetAll().OrderByDescending(post => post.Created).Take(nPosts);
+            var allPosts = GetAll().OrderByDescending(post => post.Created);
+            return allPosts.Take(nPosts);
         }
 
         public IEnumerable<Post> GetPostsByForum(int id)
         {
            return _context.Forums.Where(forum => forum.Id == id).First().Posts;
+        }
+        public async Task DeleteAsync(int postId)
+        {
+            var post = GetById(postId);
+            foreach(var reply in post.Replies)
+            {
+                _context.Remove(reply);
+            }
+            _context.Remove(post);
+            
+            await _context.SaveChangesAsync();
+
         }
     }
 }

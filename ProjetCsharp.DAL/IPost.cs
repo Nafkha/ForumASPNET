@@ -18,5 +18,6 @@ namespace ProjetCsharp.DAL
         Task Delete(int id);
         Task EditPostContent(int id, string newContent);
         Task AddReply(PostReply reply);
+        Task DeleteAsync(int postId);
     }
 }

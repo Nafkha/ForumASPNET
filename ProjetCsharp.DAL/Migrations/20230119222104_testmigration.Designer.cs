@@ -11,9 +11,10 @@ using System;
 namespace ProjetCsharp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230119222104_testmigration")]
+    partial class testmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,7 +215,7 @@ namespace ProjetCsharp.DAL.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<int>("ForumId");
+                    b.Property<int?>("ForumId");
 
                     b.Property<string>("Title");
 
@@ -302,8 +303,7 @@ namespace ProjetCsharp.DAL.Migrations
                 {
                     b.HasOne("ProjetCsharp.DAL.Models.Forum", "Forum")
                         .WithMany("Posts")
-                        .HasForeignKey("ForumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ForumId");
 
                     b.HasOne("ProjetCsharp.DAL.Models.ApplicationUser", "User")
                         .WithMany()

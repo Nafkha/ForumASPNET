@@ -16,7 +16,9 @@
         <h3 id="latestPosts">Latest Posts</h3>
         <table class="table table-hover" id="latestPostsTable">
             <tbody>
-                @foreach(var post in Model.LatestPosts)
+                @if (Model.LatestPosts.Any())
+                {
+                @foreach (var post in Model.LatestPosts)
                 {
                     <tr>
                         <td>
@@ -44,6 +46,7 @@
                             </div>
                         </td>
                     </tr>
+                }
                 }
             </tbody>
         </table>

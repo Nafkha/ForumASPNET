@@ -3,7 +3,8 @@
 <h1>Forums</h1>
 <table class="table table-hover" id="forumIndexTable">
     <tbody>
-        @foreach (var forum in Model.ForumList)
+        @if (Model.ForumList.Any()) {
+         @foreach(var forum in Model.ForumList)
         {
             <tr>
                 <td>
@@ -13,8 +14,19 @@
                 </a>
                 </td>
                 <td>@forum.Description</td>
+                @if (Context.User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+
+                <td>
+                    <form method="post" asp-action="DeleteForum" asp-route-id="@forum.Id">
+                        <input type="submit" class="btn btn-danger" value="Remove Forum" />
+                    </form>
+                </td>
+
+                }
             </tr>
 
+            }
         }
     </tbody>
 </table>

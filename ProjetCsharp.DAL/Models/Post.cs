@@ -11,7 +11,7 @@ namespace ProjetCsharp.DAL.Models
         public DateTime Created { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual Forum Forum { get; set; }
-
+        public int ForumId { get; set; }
         public virtual IEnumerable<PostReply> Replies { get; set; }
     }
 }

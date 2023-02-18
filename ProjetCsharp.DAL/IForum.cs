@@ -10,8 +10,8 @@ namespace ProjetCsharp.DAL
         IEnumerable<Forum> GetAll();
         IEnumerable<ApplicationUser> GetAllActiveUsers();
 
-        Task Create(Forum forum);
-        Task Delete(int forumId);
+        Task CreateAsync(Forum forum);
+        Task DeleteAsync(int forumId);
         Task UpdateForumTitle(int forumId, string newTitle);
         Task UpdateForumDescription(int forumId, string newDescription);
 

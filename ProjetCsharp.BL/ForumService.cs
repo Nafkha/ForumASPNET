@@ -12,20 +12,40 @@ namespace ProjetCsharp.BL
     public class ForumService : IForum
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPost _postService;
 
-        public ForumService(ApplicationDbContext context)
+
+        public ForumService(ApplicationDbContext context, IPost postService)
         {
             _context = context;
+            _postService = postService;
         }
 
-        public Task Create(Forum forum)
+        public async Task CreateAsync(Forum forum)
         {
-            throw new NotImplementedException();
+            _context.Add(forum);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Delete(int forumId)
+        public async Task DeleteAsync(int forumId)
         {
-            throw new NotImplementedException();
+            var forum = GetById(forumId);
+            var posts = _postService.GetPostsByForum(forumId);
+            foreach(var post in posts)
+            {
+
+                foreach(var reply in post.Replies)
+                {
+                    _context.Remove(reply);
+                }
+
+                _context.Remove(post);
+                
+            }
+            
+            _context.Remove(forum);
+            await _context.SaveChangesAsync();    
+                
         }
 
         public IEnumerable<Forum> GetAll()

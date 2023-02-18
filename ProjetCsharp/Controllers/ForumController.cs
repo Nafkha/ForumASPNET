@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 using ProjetCsharp.DAL;
 using ProjetCsharp.DAL.Models;
 using ProjetCsharp.Models.Forum;
@@ -6,6 +9,8 @@ using ProjetCsharp.Models.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ProjetCsharp.Controllers
 {
@@ -13,11 +18,15 @@ namespace ProjetCsharp.Controllers
     {
         private readonly IForum _forumService;
         private readonly IPost _postService;
+        private readonly IUpload _uploadService;
+        private readonly IConfiguration _configuration;
 
-        public ForumController(IForum forumService, IPost postService)
+        public ForumController(IForum forumService, IPost postService,IUpload uploadService,IConfiguration configuration)
         {
             _forumService = forumService;
             _postService = postService;
+            _uploadService = uploadService;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -96,5 +105,90 @@ namespace ProjetCsharp.Controllers
         {
             return RedirectToAction("Topic", new { id, searchQuery });
         }
+        public IActionResult Create()
+        {
+            var model = new AddForumModel();
+            return View(model);
+        }
+        [HttpPost]
+        /*public async Task<IActionResult> AddForum(AddForumModel model)
+        {
+            var imageUri = "/images/users/default.png";
+            if (model.ImageUploade != null)
+            {
+                var blockBlob = UploadForumImage(model.ImageUploade);
+                imageUri = blockBlob.Uri.AbsoluteUri;
+            }
+            var forum = new Forum
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Created = DateTime.Now,
+                ImageUrl = imageUri
+            };
+            await _forumService.CreateAsync(forum);
+            return RedirectToAction("Index", "Forum");
+   
+        }*/
+        [HttpPost]
+        public async Task<IActionResult> AddForum(AddForumModel model)
+        {
+            var connectionString = _configuration.GetConnectionString("AzureStorageAccount");
+            var container = _uploadService.GetBlobContainer(connectionString);
+            var contentDisposition = ContentDispositionHeaderValue.Parse(model.ImageUploade.ContentDisposition);
+            var filename = contentDisposition.FileName.ToString().Trim('"');
+            var blockBlob = container.GetBlockBlobReference(filename);
+            await blockBlob.UploadFromStreamAsync(model.ImageUploade.OpenReadStream());
+            var forum = BuildForum(model, blockBlob.Uri.ToString());
+            await _forumService.CreateAsync(forum);
+            return RedirectToAction("Index", "Forum");
+
+
+        }
+
+        private Forum BuildForum(AddForumModel model, string v)
+        {
+            return new Forum
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Created = DateTime.Now,
+                ImageUrl = v
+            };
+        }
+
+        private CloudBlockBlob UploadForumImage(IFormFile imageUpload)
+        {
+            // Connect to an Azure Storage Container
+
+            var connectionString = _configuration.GetConnectionString("AzureStorageAccount");
+
+            // Get Blob Container
+            var container = _uploadService.GetBlobContainer(connectionString);
+
+            // Parse the content diposition response header
+
+            var contentDisposition = ContentDispositionHeaderValue.Parse(imageUpload.ContentDisposition);
+
+            // Grab the filename
+
+            var filename = contentDisposition.FileName.Trim('"');
+
+
+            //Get a reference to a block blob
+
+            var blockBlob = container.GetBlockBlobReference(filename);
+            blockBlob.UploadFromStreamAsync(imageUpload.OpenReadStream());
+
+
+            return blockBlob;
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteForum(int id)
+        {
+            _forumService.DeleteAsync(id).Wait();
+            return RedirectToAction("Index", "Forum");
+        }
+        
     }
 }
